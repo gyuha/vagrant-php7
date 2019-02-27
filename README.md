@@ -25,6 +25,12 @@
 
 
 
+```bash
+$ vagrant plugin install vagrant-winnfsd
+$ vagrant plugin update
+```
+
+
 ## Port forwarded
 
 | port | forward | description |
@@ -32,10 +38,6 @@
 | 22   | 220     | ssh         |
 | 80   | 800     | http        |
 | 3306 | 33060   | mysql       |
-|      |         |             |
-
-
-
 
 
 ## 명령어
@@ -99,6 +101,10 @@ $ vagrant reload
 - mysql의 경우 기본 포트(3306)으로 바로 붙으면 안 붙는다. 외부 접속시에는 포트포워딩으로 해서 붙어 줘야 한다.
 
 
+
+## Vagrant Cheat Sheet
+
+![cheat sheet](https://2rwky424s9rd179jmbzqsca1-wpengine.netdna-ssl.com/wp-content/uploads/2017/12/vagrant.png)
 
 
 
