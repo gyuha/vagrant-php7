@@ -8,6 +8,17 @@
 
 
 
+## Port forwarded
+
+| port | forward | description |
+| ---- | ------- | ----------- |
+| 22   | 220     | ssh         |
+| 80   | 800     | http        |
+| 3306 | 33060   | mysql       |
+|      |         |             |
+
+
+
 
 
 ## 명령어
