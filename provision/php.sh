@@ -2,10 +2,11 @@ install_title() {
 	echo ""
 	echo "-------------------------------------------------------------------------"
 	echo "${1}"
+	echo "-------------------------------------------------------------------------"
 }
 
 install_title "Install PHP"
-	sudo apt install -y php-fpm php-cli php-common php-curl php-gd php-gmp \
+	sudo apt-get install -y php-fpm php-cli php-common php-curl php-gd php-gmp \
 	php-json php-ldap php-mysql php-odbc php-pspell php-readline php-recode \
 	php-sqlite3 php-tidy php-xml php-xmlrpc php-bcmath php-bz2 php-enchant \
 	php-imap php-interbase php-intl php-mbstring php-phpdbg php-soap php-sybase \

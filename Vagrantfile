@@ -79,5 +79,6 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     mv /tmp/config /etc/nginx/sites-available/
 	ln -snf /etc/nginx/sites-available/config /etc/nginx/sites-enabled/default
+	sudo service nginx restart
   SHELL
 end
