@@ -2,6 +2,23 @@
 
 ![vagrantfile](https://www.datocms-assets.com/2885/1506457090-blog-vagrant-list.svg)
 
+## 설치 소프트웨어
+
+- Ubuntu 18.04
+- PHP 7.2
+- Node.js 10
+- nginx
+- mysql 5.7
+- 그외 기타 유틸...
+
+
+
+# Base 
+
+- https://app.vagrantup.com/ubuntu/boxes/bionic64
+
+
+
 ## Vagrantfile 다운로드
 
 > https://www.vagrantup.com/downloads.html
@@ -75,9 +92,13 @@ $ vagrant reload
 
 
 
+
+
 ## 주의사항
 
 - mysql의 경우 기본 포트(3306)으로 바로 붙으면 안 붙는다. 외부 접속시에는 포트포워딩으로 해서 붙어 줘야 한다.
+
+
 
 
 
