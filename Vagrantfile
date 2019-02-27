@@ -73,13 +73,12 @@ Vagrant.configure("2") do |config|
   
   config.vm.provision :shell, privileged: false, path: 'provision/base.sh'
   config.vm.provision :shell, privileged: false, path: 'provision/php.sh'
-  config.vm.provision :shell, privileged: false, path: 'provision/mysql.sh'
-  config.vm.provision :shell, privileged: false, path: 'provision/redis.sh'
   
   config.vm.provision "file", source: "config/nginx.config", destination: "/tmp/config"
-  config.vm.provision "shell", inline: <<-SHELL
-    mv /tmp/config /etc/nginx/sites-available/
-	ln -snf /etc/nginx/sites-available/config /etc/nginx/sites-enabled/default
-	sudo service nginx restart
+  config.vm.provision :shell, privileged: false, path: 'provision/nginx.sh'
+
+  config.vm.provision :shell, privileged: false, path: 'provision/mysql.sh'
+  config.vm.provision :shell, privileged: false, path: 'provision/redis.sh'
+
   SHELL
 end
