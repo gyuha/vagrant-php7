@@ -27,9 +27,6 @@ install_title "Install default package"
 	sudo apt-get install -y cronolog vim exuberant-ctags git build-essential g++ curl \
 		libssl-dev expect tmux gcc make autoconf libc-dev pkg-config libmcrypt-dev
 
-install_title "Install Nginx"
-	sudo apt-get install -y nginx
-
 install_title "Install node.js"
 	sudo curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 	sudo apt-get install -y nodejs
@@ -37,6 +34,4 @@ install_title "Install node.js"
 	npm config set prefix '~/.npm-global'
 	echo "export PATH=~/.npm-global/bin:\$PATH" >> ~/.profile
 	npm install -g yarn pm2
-
-
 

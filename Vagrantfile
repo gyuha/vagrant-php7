@@ -80,5 +80,4 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, privileged: false, path: 'provision/mysql.sh'
   config.vm.provision :shell, privileged: false, path: 'provision/redis.sh'
 
-  SHELL
 end
