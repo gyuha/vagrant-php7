@@ -1,6 +1,6 @@
 # Vagrantfile for PHP7.2
 
-![vagrantfile](https://www.datocms-assets.com/2885/1506457090-blog-vagrant-list.svg){:width="100px"}
+![vagrantfile](https://www.datocms-assets.com/2885/1506457090-blog-vagrant-list.svg)
 
 ## Vagrantfile 다운로드
 
@@ -61,6 +61,12 @@ $ vagrant provision
 ```
 $ vagrant reload
 ```
+
+
+
+## 주의사항
+
+- mysql의 경우 기본 포트(3306)으로 바로 붙으면 안 붙는다. 외부 접속시에는 포트포워딩으로 해서 붙어 줘야 한다.
 
 
 

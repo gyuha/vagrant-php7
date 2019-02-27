@@ -24,8 +24,9 @@ Vagrant.configure("2") do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # NOTE: This will enable public access to the opened port
-  config.vm.network "forwarded_port", guest: 80, host: 8080
-
+  config.vm.network "forwarded_port", guest: 80, host: 8000
+  config.vm.network "forwarded_port", guest: 3306, host: 33060
+  
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
   # via 127.0.0.1 to disable public access
@@ -68,5 +69,15 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
-  config.vm.provision :shell, privileged: false, path: 'setup.sh'
+  
+  config.vm.provision :shell, privileged: false, path: 'provision/base.sh'
+  config.vm.provision :shell, privileged: false, path: 'provision/php.sh'
+  config.vm.provision :shell, privileged: false, path: 'provision/mysql.sh'
+  config.vm.provision :shell, privileged: false, path: 'provision/redis.sh'
+  
+  config.vm.provision "file", source: "config/nginx.config", destination: "/tmp/config"
+  config.vm.provision "shell", inline: <<-SHELL
+    mv /tmp/config /etc/nginx/sites-available/
+	ln -snf /etc/nginx/sites-available/config /etc/nginx/sites-enabled/default
+  SHELL
 end
