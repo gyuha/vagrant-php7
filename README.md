@@ -13,6 +13,24 @@
 
 
 
+## 작업 공간 만들기
+
+> ./workspace
+
+이 폴더의 `workspace/site/public`가 nginx와 연결이 되어 있다.
+
+```bash
+> vagrant ssh
+$ cd workspace
+$ lumen new site
+```
+
+이런 식으로 하면 기본 작업 공간에 만들어 진다.
+
+하지만 사이트 소스가 있을 경우에는 workspace의 site를 소스코드로 넣어 주면 된다.
+
+
+
 # Base 
 
 - https://app.vagrantup.com/ubuntu/boxes/bionic64
@@ -112,3 +130,5 @@ $ vagrant reload
 
 - [Getting Started with Vagrant on Windows](https://www.sitepoint.com/getting-started-vagrant-windows/)
 - [Vagrant : 쉘 스크립트로 프로비저닝하기](https://rorlab.org/rblogs/237)
+- [Vagrant - Provisioning](https://thomasventurini.com/articles/vagrant-provisioning)
+- [라라벨 홈스테드](https://laravel.kr/docs/5.7/homestead)
