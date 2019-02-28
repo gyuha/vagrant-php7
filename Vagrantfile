@@ -73,11 +73,12 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
+
+  config.vm.provision "file", source: "config/nginx.config", destination: "/tmp/config"
   
   config.vm.provision :shell, privileged: false, path: 'provision/base.sh'
   config.vm.provision :shell, privileged: false, path: 'provision/php.sh'
   
-  config.vm.provision "file", source: "config/nginx.config", destination: "/tmp/config"
   config.vm.provision :shell, privileged: false, path: 'provision/nginx.sh'
 
   config.vm.provision :shell, privileged: false, path: 'provision/mysql.sh'

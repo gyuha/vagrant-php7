@@ -11,6 +11,7 @@ echo "#     Provision virtual machine...     #"
 echo "########################################"
 echo ""
 
+# 우분투 레포지트리를 다음의 미러링 서버로 변경 -> 속도 차이가 많이 남..
 sudo sed -i "s/archive.ubuntu.com/ftp.daumkakao.com/" /etc/apt/sources.list
 
 install_title "Install git"

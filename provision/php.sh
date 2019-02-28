@@ -30,3 +30,20 @@ xdebug.remote_connect_back = on
 "
 
 echo "$XDEBUG_INI" | sudo tee -a /etc/php/7.2/fpm/php.ini
+
+install_title "Install composer"
+curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin/
+sudo chown -R $USER:$USER ~/.composer
+sudo ln -s /usr/local/bin/composer.phar /usr/local/bin/composer
+
+install_title "Install luman"
+composer global require "laravel/lumen-installer"
+echo "export PATH=\$PATH:~/.composer/vendor/bin" >> ~/.profile
+
+# install_title "Install Laravel"
+# composer global require laravel/installer
+
+install_title "Install deployer"
+curl -LO https://deployer.org/deployer.phar
+sudo mv deployer.phar /usr/local/bin/dep
+sudo chmod +x /usr/local/bin/dep
