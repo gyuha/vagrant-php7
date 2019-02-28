@@ -13,10 +13,6 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "ubuntu/bionic64"
-  #config.vm.synced_folder "./workspace", "/home/vagrant/workspace", disable: true
-  #config.vm.network "private_network", :type => 'dhcp', :name => 'VirtualBox Host-Only Ethernet Adapter', :adapter => 2
-  #config.vm.synced_folder ".", "/vagrant", type: "nfs"
-  config.vm.synced_folder "./workspace", "/home/vagrant/workspace"
   
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -38,11 +34,15 @@ Vagrant.configure("2") do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
+  # config.vm.network "private_network", :type => 'dhcp', :name => 'VirtualBox Host-Only Ethernet Adapter #3', :adapter => 2
   # config.vm.network "private_network", ip: "192.168.33.10"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
+  #####
+  # 내부 내트워크에서 서버로 띄워서 쓸려면 아래것을 켜주는 것도 좋다.
+  #####
   # config.vm.network "public_network"
 
   # Share an additional folder to the guest VM. The first argument is
@@ -50,6 +50,8 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
+  # config.vm.synced_folder ".", "/vagrant", type: "nfs"
+  config.vm.synced_folder "./workspace", "/home/vagrant/workspace"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -74,14 +76,14 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
 
-  config.vm.provision "file", source: "config/nginx.config", destination: "/tmp/config"
+  # config.vm.provision "file", source: "config/nginx.config", destination: "/tmp/config"
   
-  config.vm.provision :shell, privileged: false, path: 'provision/base.sh'
-  config.vm.provision :shell, privileged: false, path: 'provision/php.sh'
+  config.vm.provision :shell, privileged: false, path: 'scripts/base.sh'
+  config.vm.provision :shell, privileged: false, path: 'scripts/php.sh'
   
-  config.vm.provision :shell, privileged: false, path: 'provision/nginx.sh'
+  config.vm.provision :shell, privileged: false, path: 'scripts/nginx.sh'
 
-  config.vm.provision :shell, privileged: false, path: 'provision/mysql.sh'
-  config.vm.provision :shell, privileged: false, path: 'provision/redis.sh'
+  config.vm.provision :shell, privileged: false, path: 'scripts/mysql.sh'
+  config.vm.provision :shell, privileged: false, path: 'scripts/redis.sh'
 
 end
