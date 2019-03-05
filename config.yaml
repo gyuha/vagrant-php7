@@ -1,0 +1,70 @@
+local_domain  : &local_domain    'vagrant.local'
+machine_name  : &machine_name    'dev-1'
+machine_ram   : &machine_ram     '1024' # auto, 1024
+machine_cpu   : &machine_cpu     '2' # auto, 1
+
+public_ip_use : &public_ip_use   'true'
+public_ip     : &public_ip       'auto' 
+# 또는
+# public_ip     : &public_ip       '192.168.0.115' 
+
+# public_ip_use 가 false일 경우
+private_ip    : &private_ip      'auto'
+# 또는 
+# private_ip    : &private_ip      '10.10.10.10'
+
+vms:
+  name               : *machine_name
+  box_check_update   : false
+  ram                : *machine_ram
+  cpus               : *machine_cpu
+
+public_network :
+  use : *public_ip_use
+  ip : *public_ip
+  #  ip_public : auto
+
+private_network :
+  ip : *private_ip
+
+ports :
+  - guest : 22      # ssh
+    host  : 2200
+  - guest : 80      # http
+    host  : 8000
+  - guest : 5432    # postgresql
+    host  : 54320
+  - guest : 3306    # mysql
+    host  : 33060 
+  - guest : 6379    # redis
+    host  : 63790
+  - guest : 27017   # mongodb
+    host  : 27017
+
+syncFolders : 
+  - host  : ./workspace                 # local share folder
+    guest : /home/vagrant/workspace     # sync folder
+
+scriptFiles :
+  - file : base
+  - file : samba
+    args :
+      - workspace                   # share name
+      - /home/vagrant/workspace     # share folder
+  - file : nodejs
+  - file : mysql
+    args :
+       - dbname   # database name
+       - user     # user name
+       - password # user password
+  - file : nginx
+    args :
+      - /home/vagrant/workspace/site/public  # home folder
+  - file : php
+  - file : redis
+  - file : postgresql
+    args :
+      - dbname    # database name
+      - user      # user name
+      - password  # user password
+  - file : mongodb

@@ -10,7 +10,7 @@ install_title "Install Nginx"
 block="server {
     listen   80;
 
-    root /home/vagrant/workspace/site/public;
+    root ${1};
     index index.php index.html index.htm;
 
     # Make site accessible from http://localhost/

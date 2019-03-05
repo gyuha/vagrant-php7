@@ -1,89 +1,83 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+require 'yaml'
 
-# All Vagrant configuration is done below. The "2" in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
-Vagrant.configure("2") do |config|
-  # The most common configuration options are documented and commented below.
-  # For a complete reference, please see the online documentation at
+dir = File.dirname(File.expand_path(__FILE__))
+conf = YAML.load_file("#{dir}/config.yaml")
+
+Vagrant.require_version ">= 1.6.0"
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # https://docs.vagrantup.com.
 
-  # Every Vagrant development environment requires a box. You can search for
-  # boxes at https://vagrantcloud.com/search.
   config.vm.box = "ubuntu/bionic64"
-  
-  # Disable automatic box update checking. If you disable this, then
-  # boxes will only be checked for updates when the user runs
-  # `vagrant box outdated`. This is not recommended.
-  # config.vm.box_check_update = false
-
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # NOTE: This will enable public access to the opened port
-  config.vm.network "forwarded_port", guest: 22, host: 220
-  config.vm.network "forwarded_port", guest: 80, host: 800
-  config.vm.network "forwarded_port", guest: 3306, host: 33060
-  
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine and only allow access
-  # via 127.0.0.1 to disable public access
-  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
-  # config.vm.network "private_network", :type => 'dhcp', :name => 'VirtualBox Host-Only Ethernet Adapter #3', :adapter => 2
-  # config.vm.network "private_network", ip: "192.168.33.10"
-
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  #####
-  # 내부 내트워크에서 서버로 띄워서 쓸려면 아래것을 켜주는 것도 좋다.
-  #####
-  # config.vm.network "public_network"
-
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
-  # config.vm.synced_folder ".", "/vagrant", type: "nfs"
-  config.vm.synced_folder "./workspace", "/home/vagrant/workspace"
-
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
-  #
+  ####################################
+  # VirtualBox Setting
   config.vm.provider "virtualbox" do |vb|
-    # Display the VirtualBox GUI when booting the machine
-    vb.gui = false
-    # Customize the amount of memory on the VM:
-    vb.memory = 1024
-	vb.cpus = 2
+    vb.gui    = conf["vms"]["gui"]
+    vb.memory = conf["vms"]["ram"]
+    vb.cpus   = conf["vms"]["cpus"]
+    vb.name   = conf["vms"]["name"]
   end
-  #
-  # View the documentation for the provider you are using for more
-  # information on available options.
 
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   apt-get update
-  #   apt-get install -y apache2
-  # SHELL
+  ####################################
+  # 네트워크 설정
+  if conf["public_network"]["use"] == "true"
+    if conf["public_network"]["ip"] == "auto"
+      config.vm.network "public_network"
+    else
+      config.vm.network "public_network", 
+        ip: conf["public_network"]["ip"]
+    end
+  else
+    if conf["private_network"]["ip"] == "auto"
+      config.vm.network "private_network"
+    else
+      config.vm.network "private_network",
+        ip: conf["private_network"]["ip"]
+    end
+  end
 
-  # config.vm.provision "file", source: "config/nginx.config", destination: "/tmp/config"
-  
-  config.vm.provision :shell, privileged: false, path: 'scripts/base.sh'
-  config.vm.provision :shell, privileged: false, path: 'scripts/php.sh'
-  
-  config.vm.provision :shell, privileged: false, path: 'scripts/nginx.sh'
+  ####################################
+  # Port forward
+  conf["ports"].each do |port|
+    config.vm.network "forwarded_port",
+      guest: port["guest"] ,
+      host: port["host"]
+  end
 
-  config.vm.provision :shell, privileged: false, path: 'scripts/mysql.sh'
-  config.vm.provision :shell, privileged: false, path: 'scripts/redis.sh'
+  ####################################
+  # Sync Folder
+  conf["syncFolders"].each do |share|
+    if share["type"] == "smb"
+      config.vm.synced_folder share["host"], 
+        share["guest"], 
+        type: share["type"],
+        smb_username: share["smb_username"],
+        smb_password: share["smb_password"]
+    else
+      config.vm.synced_folder share["host"], share["guest"]
+    end
+  end
+
+  ####################################
+  # Provision
+  config.vm.provision "file",
+    source: "scripts/bash_profiles.sh",
+    destination: "$HOME/.bash_profiles"
+
+  # HostName Change
+  config.vm.provision :shell,
+    inline: "sudo sysctl kernel.hostname=#{conf["vms"]["name"]}"
+
+  # Provision setting by files
+  conf["scriptFiles"].each do |sf|
+    # puts "scripts/#{sf}.sh"
+    config.vm.provision :shell, 
+      privileged: false, 
+      path: "scripts/#{sf["file"]}.sh",
+      args: sf["args"]
+  end
 
 end

@@ -1,6 +1,6 @@
-MYSQL_DBNAME=dbname
-MYSQL_ID=devuser
-MYSQL_PASSWORD=devpassword
+MYSQL_DBNAME=$1
+MYSQL_ID=$2
+MYSQL_PASSWORD=$3
 
 install_title() {
 	echo ""
