@@ -17,7 +17,10 @@ sudo sed -i "s/archive.ubuntu.com/ftp.daumkakao.com/" /etc/apt/sources.list
 
 install_title "Install git"
 	sudo apt-get install git
-	
+
+install_title "Install aws-cli"
+	sudo apt-get install awscli
+
 install_title "shell setting"
 block="
 if [ -f $HOME/.bash_profiles ]; then
