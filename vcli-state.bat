@@ -1,0 +1,2 @@
+vagrant global-status
+pause
